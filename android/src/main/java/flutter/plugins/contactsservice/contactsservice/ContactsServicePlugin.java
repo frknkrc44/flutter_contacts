@@ -184,7 +184,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
                   StructuredName.PREFIX,
                   StructuredName.SUFFIX,
                   CommonDataKinds.Note.NOTE,
-                  Phone.NUMBER,
+                  Phone.NORMALIZED_NUMBER,
                   Phone.TYPE,
                   Phone.LABEL,
                   Email.DATA,
@@ -589,7 +589,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
       }
       //PHONES
       else if (mimeType.equals(CommonDataKinds.Phone.CONTENT_ITEM_TYPE)){
-        String phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
+        String phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NORMALIZED_NUMBER));
         if (!TextUtils.isEmpty(phoneNumber)){
           int type = cursor.getInt(cursor.getColumnIndex(Phone.TYPE));
           String label = Item.getPhoneLabel(resources, type, cursor, localizedLabels);
@@ -750,7 +750,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
       op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
               .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
               .withValue(ContactsContract.Data.MIMETYPE, CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-              .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone.value);
+              .withValue(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER, phone.value);
 
       if (phone.type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM){
         op.withValue( ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.BaseTypes.TYPE_CUSTOM );
@@ -890,7 +890,7 @@ public class ContactsServicePlugin implements MethodCallHandler, FlutterPlugin, 
       op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
               .withValue(ContactsContract.Data.MIMETYPE, CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
               .withValue(ContactsContract.Data.RAW_CONTACT_ID, contact.identifier)
-              .withValue(Phone.NUMBER, phone.value);
+              .withValue(Phone.NORMALIZED_NUMBER, phone.value);
 
       if (phone.type == ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM){
         op.withValue( ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.BaseTypes.TYPE_CUSTOM );
